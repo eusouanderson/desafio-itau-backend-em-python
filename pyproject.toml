@@ -1,0 +1,50 @@
+[project]
+name = "desafio-itau-backend-em-python"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Anderson Rodrigues",email = "eusouanderson@outlook.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13,<4.0"
+dependencies = [
+    "fastapi[standard] (>=0.115.14,<0.116.0)",
+    "sqlalchemy (>=2.0.41,<3.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.11.13"
+pytest = "^8.4.0"
+pytest-cov = "^6.2.1"
+taskipy = "^1.14.1"
+pre-commit = "^4.2.0"
+
+[tool.ruff]
+line-length = 79
+extend-exclude = ['migrations']
+
+[tool.ruff.lint]
+preview = true
+select = ['I', 'F', 'E', 'W', 'PL', 'PT']
+
+[tool.ruff.format]
+preview = true
+quote-style = 'single'
+
+[tool.pytest.ini_options]
+pythonpath = "."
+addopts = "--cov=itau_api --cov-report=term-missing"
+
+[tool.taskipy.tasks]
+lint = 'ruff check'
+pre_format = 'ruff check --fix'
+format = 'ruff format'
+run = 'fastapi dev itau_api/main.py'
+pre_test = 'task lint'
+test = 'pytest -s -x --cov=fast_zero -vv'
+post_test = 'coverage html'
